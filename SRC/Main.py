@@ -1,12 +1,16 @@
 import SRC.Bloomfilter as Bloomfilter
+
+bloom = Bloomfilter()
+
 def main():
-    bloom = Bloomfilter() #create object
+     #create object
     listpass = ["password123", "passwords", "Jessica"] #dummy data 
     bloom.train_filter(listpass)
     while True: 
         print("Welcome to menu, choose from the follwoing.")
         print("Choose 1 to set a new password of length 8, 10 or 12 characters.") #doesn't save password anywhere
         print("Choose 2 to chnage your password.") 
+        print("Choose 3 to compare passwords with jaccard coefficient") 
         print("Choose 0 to exit menu.")
         option = int(input("Enter your choice: "))
         
@@ -34,6 +38,9 @@ def main():
                 else:
                     print("Insert password with valid length")    
                                            
+        elif option == 3:
+            nJaccard()
+            
         elif option == 0: 
             print("Exiting menu")
             break
@@ -41,6 +48,15 @@ def main():
         else:
             print("Insert a valid option")
             
+def nJaccard() -> None:
+    p = input("Enter password: ")
+
+    new_p = input("Enter another password to compare using Jaccard Coefficient. To exit enter 0: ")
+    while (new_p != "0"):
+        similarity = bloom.get_similarity(p, new_p)
+        print(f"The Jaccard Coefficient is {similarity}")
+        new_p = input("Enter another password to compare using Jaccard Coefficient. To exit enter 0: ")
+
 if __name__ == "__main__":
     main()
             
