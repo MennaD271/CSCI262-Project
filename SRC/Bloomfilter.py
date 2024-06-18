@@ -1,6 +1,7 @@
 import hashlib
 
 class Bloomfilter:
+    
     def __init__(self):
         self.size = 1000
         self.filter = [0 for i in range(self.size)]
@@ -46,8 +47,15 @@ class Bloomfilter:
         all the arrays of indices are union-ed to give a single array of indices for the entire word
         this array is returned
         '''
+        password = '_' + password + '_'
+        bigrams = [password[i:i+2] for i in range(len(password)-1)]
+        unioned_hash = []
+        for bigram in bigrams:
+            hashed = self.hash(bigram)
+            unioned_hash += hashed
+        return unioned_hash
         #implemented by menna
-        return None
+        #return None
 
     def get_similarity(self, password1, password2):
         '''
@@ -78,7 +86,3 @@ class Bloomfilter:
             
         return True
     
-#Testing
-a = Bloomfilter()
-b = input("Enter string: ")
-print(a.hash(b))
