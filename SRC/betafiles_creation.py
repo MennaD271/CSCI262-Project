@@ -8,11 +8,9 @@ def read_dataset(filepath):
 def generate_beta(filepath, output_filename) -> float:
     bloomfilter = Bloomfilter()
     passwords = read_dataset(filepath)
-    #bloomfilter.train_filter(passwords)  # Pass passwords to train_filter method
     with open(output_filename, 'w') as outfile:
         for password in passwords:
             beta = bloomfilter.bigram_hash(password)
-            #beta_str = ' '.join(map(str, beta))
             outfile.write(f"{password} {beta}\n")
 
     

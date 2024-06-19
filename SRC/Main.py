@@ -5,9 +5,9 @@ bloom = Bloomfilter()
 
 def main():
     while True: 
-        print("\n\nWelcome to menu, choose from the follwoing.")
+        print("\n\nWelcome to menu, choose from the following.")
         print("Choose 1 to generate the bloom filter of your given password.")
-        print("Choose 2 to check if passwords are similar")
+        print("Choose 2 to check if passwords are similar.")
         print("Choose 3 to compare passwords with jaccard coefficient.") 
         print("Choose 4 to analyze dataset 1.") 
         print("Choose 5 to analyze dataset 2.") 
@@ -15,14 +15,14 @@ def main():
         print("Choose 0 to exit menu.")
         option = input("Enter your choice: ").strip()
                                            
-        if option == "3":
-            nJaccard()
+        if option == "1":
+            bloomfilter()     
         
         elif option == "2":
             similarity()
         
-        elif option == "1": 
-            bloomfilter()     
+        elif option == "3": 
+            nJaccard()   
         
         elif option == "4":
             avg_similarity = analyzeDataset1(); 
