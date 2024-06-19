@@ -1,47 +1,51 @@
 from Bloomfilter import Bloomfilter
+import time
+
 bloom = Bloomfilter()
+
 def main():
-     #create object
-    listpass = ["password123", "passwords", "Jessica"] #dummy data 
-    #bloom.train_filter(listpass)
     while True: 
-        print("Welcome to menu, choose from the follwoing.")
-        print("Choose 1 to set a new password of length 8, 10 or 12 characters.") #doesn't save password anywhere
-        print("Choose 2 to change your password.") 
+        print("\n\nWelcome to menu, choose from the follwoing.")
+        print("Choose 1 to generate the bloom filter of your given password.")
+        print("Choose 2 to check if passwords are similar")
         print("Choose 3 to compare passwords with jaccard coefficient.") 
-        print("Choose 4 to generate the bloom filter of your given password.")
+        print("Choose 4 to analyze dataset 1.") 
+        print("Choose 5 to analyze dataset 2.") 
+        print("Choose 6 to analyze dataset 3.") 
         print("Choose 0 to exit menu.")
-        option = int(input("Enter your choice: "))
-        
-        if option == 1:
-            password = input("Set a new password: ")
-            if len(password) in [8,10,12]:
-                if bloom.test(password):
-                    print("Strong")
-                else:
-                    print("Weak")
-            else:
-                print("Invalid length")
-                
-        elif option == 2:
-            old_pass = input("Enter your old password: ")
-            new_pass = input("Enter your new password: ")
-            while True:  #keep looping till user enters a valid length or a password that has less than 0.5 similarity
-                if len(password) == 8 or 10 or 12:
-                    coefficient = bloom.get_similarity(old_pass, new_pass)
-                    if coefficient >= 0.5:
-                        print("Password is too similar to your old password. Try again")
-                    else:
-                        print("Password changed successfully")
-                        break
-                else:
-                    print("Insert password with valid length")    
+        option = int(input("Enter your choice: ")) 
                                            
-        elif option == 3:
+        if option == 3:
             nJaccard()
         
-        elif option == 4: 
+        elif option == 2:
+            similarity()
+        
+        elif option == 1: 
             filter()     
+        
+        elif option == 4:
+            t1 = time.time()
+            avg_similarity = analyzeDataset1(); 
+            t2 = time.time()
+            print(f"Average Similarity of dataset 1 is: {avg_similarity}")
+            print(f"Time taken: {t2-t1} seconds")
+
+        elif option == 5:
+            t1 = time.time()
+            avg_similarity = analyzeDataset1(); 
+            t2 = time.time()
+            avg_similarity = analyzeDataset2(); 
+            print(f"Average Similarity of dataset 2 is: {avg_similarity}")
+            print(f"Time taken: {t2-t1} seconds")
+
+        elif option == 6:
+            t1 = time.time()
+            avg_similarity = analyzeDataset1(); 
+            t2 = time.time()
+            avg_similarity = analyzeDataset3(); 
+            print(f"Average Similarity of dataset 3 is: {avg_similarity}")
+            print(f"Time taken: {t2-t1} seconds")
                   
         elif option == 0: 
             print("Exiting menu")
@@ -64,6 +68,50 @@ def filter() -> None:
     filter = bloom.bigram_hash(password)
     print("Your filter is: ", filter)
 
+def similarity():
+    pass1 = input("Enter password from the beta file: ")
+    pass2 = input("Enter another password from the beta file: ")
+    similarity = bloom.get_similarity(pass1, pass2)
+    #Jaccard Threshold
+    if similarity > 0.7: 
+        print("Passwords are very similar")
+    else: 
+        print("Passwords are not similar")
+
+def analyzeDataset1():
+    similarity = 0.0
+    with open("SRC/datasets/beta1.txt", 'r') as w:
+        lines = w.readlines()
+        for i in range(0, len(lines), 2):
+            similarity += bloom.get_similarity(lines[i], lines[i+1])
+
+        similarity /= len(lines)
+
+    return similarity
+
+def analyzeDataset2():
+    similarity = 0.0
+    with open("SRC/datasets/beta2.txt", 'r') as w:
+        lines = w.readlines()
+        for i in range(0, len(lines), 2):
+            similarity += bloom.get_similarity(lines[i], lines[i+1])
+
+        similarity /= len(lines)
+
+    return similarity
+
+def analyzeDataset3():
+    similarity = 0.0
+    with open("SRC/datasets/beta3.txt", 'r') as w:
+        lines = w.readlines()
+        for i in range(0, len(lines), 2):
+            similarity += bloom.get_similarity(lines[i], lines[i+1])
+
+        similarity /= len(lines)
+
+    return similarity
+
+        
 
 if __name__ == "__main__":
     main()

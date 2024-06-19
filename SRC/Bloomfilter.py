@@ -49,7 +49,8 @@ class Bloomfilter:
         for each bigram
             the hash function is called which returns an array of indices for 1s in the BF
         all the arrays of indices are union-ed to give a single array of indices for the entire word
-        this array is returned
+        
+        A string is generated where all the hash indices are 1s and the other indices are 0s. This string represents the bloom filter. This string is returned.
         '''
         password = '_' + password + '_'
         bigrams = [password[i:i+2] for i in range(len(password)-1)]
@@ -64,6 +65,25 @@ class Bloomfilter:
         str_list = [str(i) for i in bin]
         filter = int(''.join(str_list))
         return filter
+    
+    def bigram_hash_indices(self, password:str):
+        '''
+        Takes a password - eg. pass1
+        Adds empty space to the start and end - _pass1_
+        Splits it into bigrams - [_p, pa, as, ss, s1, 1_]
+        for each bigram
+            the hash function is called which returns an array of indices for 1s in the BF
+        all the arrays of indices are union-ed to give a single array of indices for the entire word
+        this array is returned
+        '''
+        password = '_' + password + '_'
+        bigrams = [password[i:i+2] for i in range(len(password)-1)]
+        unioned_hash = []
+        for bigram in bigrams:
+            hashed = self.hash(bigram)
+            unioned_hash += hashed
+
+        return unioned_hash
 
     def get_similarity(self, password1, password2):
         '''
@@ -74,10 +94,12 @@ class Bloomfilter:
         Adding the lengths of the two arrays will give us the total number of bits turned 1 in the BF
         Then we can calculate the jaccard coefficient. 
         '''
-        new_password = self.bigram_hash(password2)
-        intersection = filter(lambda x: x in new_password, password1)
+        new_password = self.bigram_hash_indices(password2)
+        password1Hash = self.bigram_hash_indices(password1)
+
+        intersection = filter(lambda x: x in new_password, password1Hash)
         
-        distance = len(intersection) / (len(password1) + len(new_password))
+        distance = len(list(intersection)) / (len(password1) + len(new_password))
         return distance
 
     
