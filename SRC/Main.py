@@ -7,7 +7,7 @@ def main():
     while True: 
         print("Welcome to menu, choose from the follwoing.")
         print("Choose 1 to set a new password of length 8, 10 or 12 characters.") #doesn't save password anywhere
-        print("Choose 2 to chnage your password.") 
+        print("Choose 2 to change your password.") 
         print("Choose 3 to compare passwords with jaccard coefficient.") 
         print("Choose 4 to generate the bloom filter of your given password.")
         print("Choose 0 to exit menu.")

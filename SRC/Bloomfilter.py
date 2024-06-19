@@ -3,6 +3,9 @@ import hashlib
 class Bloomfilter:
     
     def __init__(self):
+        '''
+        defines the size of the filter and the number of hash functions that will be performed on the passwords.
+        '''
         self.size = 1000
         self.filter = [0 for i in range(self.size)]
         self.num_of_hashes = 15
@@ -28,10 +31,11 @@ class Bloomfilter:
     
     def train_filter(self, file, passwords):
         '''
-        Takes a list of passwords and trains the bloom filter. bigram_hash function is used to generate the indices for the BF. It returns an array of indices for which the value must be 1 in the BF. 
+        Takes a list of passwords and trains the bloom filter. 
+        Bigram_hash function is used to generate the indices for the BF. 
+        It returns an array of indices for which the value must be 1 in the BF. 
         '''
-        #file = open('rockyou.txt', 'r')
-        #passwords = file.readlines()  
+        
         for password in passwords: 
             for index in self.bigram_hash(password):
                 self.filter[index] = 1
@@ -53,9 +57,13 @@ class Bloomfilter:
         for bigram in bigrams:
             hashed = self.hash(bigram)
             unioned_hash += hashed
-        return unioned_hash
-        #implemented by menna
-        #return None
+        bin = [0] * 1000
+        for i in range(1000):
+            if i in unioned_hash:
+                bin[i] = 1
+        str_list = [str(i) for i in bin]
+        filter = int(''.join(str_list))
+        return filter
 
     def get_similarity(self, password1, password2):
         '''
