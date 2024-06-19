@@ -111,7 +111,7 @@ class Bloomfilter:
         if there are no 0s, then its a strong password and returns true
         '''
         for index in self.bigram_hash_indices(password):
-            if self.filter[index] == 0:
+            if self.filter[index] == 1:
                 return False
             
         return True
