@@ -22,30 +22,20 @@ def main():
             similarity()
         
         elif option == 1: 
-            filter()     
+            bloomfilter()     
         
         elif option == 4:
-            t1 = time.time()
             avg_similarity = analyzeDataset1(); 
-            t2 = time.time()
             print(f"Average Similarity of dataset 1 is: {avg_similarity}")
-            print(f"Time taken: {t2-t1} seconds")
+            
 
         elif option == 5:
-            t1 = time.time()
-            avg_similarity = analyzeDataset1(); 
-            t2 = time.time()
             avg_similarity = analyzeDataset2(); 
             print(f"Average Similarity of dataset 2 is: {avg_similarity}")
-            print(f"Time taken: {t2-t1} seconds")
 
         elif option == 6:
-            t1 = time.time()
-            avg_similarity = analyzeDataset1(); 
-            t2 = time.time()
             avg_similarity = analyzeDataset3(); 
             print(f"Average Similarity of dataset 3 is: {avg_similarity}")
-            print(f"Time taken: {t2-t1} seconds")
                   
         elif option == 0: 
             print("Exiting menu")
@@ -63,7 +53,7 @@ def nJaccard() -> None:
         print(f"The Jaccard Coefficient is {similarity}")
         new_p = input("Enter another password to compare using Jaccard Coefficient. To exit enter 0: ")
         
-def filter() -> None:
+def bloomfilter() -> None:
     password = input("Enter password to get bloom filter: ")
     filter = bloom.bigram_hash(password)
     print("Your filter is: ", filter)
@@ -79,37 +69,95 @@ def similarity():
         print("Passwords are not similar")
 
 def analyzeDataset1():
+    t1 = time.time()
+
     similarity = 0.0
-    with open("SRC/datasets/beta1.txt", 'r') as w:
-        lines = w.readlines()
-        for i in range(0, len(lines), 2):
-            similarity += bloom.get_similarity(lines[i], lines[i+1])
+    passwords = open("SRC/datasets/dataset1.txt", "r").readlines()
+    passwords = list(filter(lambda password: password != '\n', passwords))
+    passwords = list(map(lambda password: password.replace("\n", "").strip() ,passwords))
 
-        similarity /= len(lines)
+    bf = Bloomfilter()
+    bf.train_filter(passwords)
 
-    return similarity
+    t2=time.time()
+
+    inp = input("Enter password to test dataset: ").strip()
+
+    t3=time.time()
+
+    if (bf.test(inp)): 
+        print("Password is strong")
+    else: 
+        print("Password is weak")
+
+    for i in range(0, len(passwords), 2):
+        similarity += bloom.get_similarity(passwords[i], passwords[i+1])
+
+    t4=time.time()
+
+    print(f"Time taken: {t4-t3+t2-t1} seconds")
+    return similarity/len(passwords)
 
 def analyzeDataset2():
+    t1 = time.time()
+
     similarity = 0.0
-    with open("SRC/datasets/beta2.txt", 'r') as w:
-        lines = w.readlines()
-        for i in range(0, len(lines), 2):
-            similarity += bloom.get_similarity(lines[i], lines[i+1])
+    passwords = open("SRC/datasets/dataset2.txt", "r").readlines()
+    passwords = list(filter(lambda password: password != '\n', passwords))
+    passwords = list(map(lambda password: password.replace("\n", "").strip() ,passwords))
 
-        similarity /= len(lines)
+    bf = Bloomfilter()
+    bf.train_filter(passwords)
 
-    return similarity
+    t2=time.time()
+
+    inp = input("Enter password to test dataset: ").strip()
+
+    t3=time.time()
+
+    if (bf.test(inp)): 
+        print("Password is strong")
+    else: 
+        print("Password is weak")
+
+    for i in range(0, len(passwords), 2):
+        similarity += bloom.get_similarity(passwords[i], passwords[i+1])
+
+    t4=time.time()
+
+    print(f"Time taken: {t4-t3+t2-t1} seconds")
+    return similarity/len(passwords)
 
 def analyzeDataset3():
+    t1 = time.time()
+
     similarity = 0.0
-    with open("SRC/datasets/beta3.txt", 'r') as w:
-        lines = w.readlines()
-        for i in range(0, len(lines), 2):
-            similarity += bloom.get_similarity(lines[i], lines[i+1])
+    passwords = open("SRC/datasets/dataset3.txt", "r").readlines()
+    passwords = list(filter(lambda password: password != '\n', passwords))
+    passwords = list(map(lambda password: password.replace("\n", "").strip() ,passwords))
 
-        similarity /= len(lines)
+    bf = Bloomfilter()
+    bf.train_filter(passwords)
 
-    return similarity
+    t2=time.time()
+
+    inp = input("Enter password to test dataset: ").strip()
+
+    t3=time.time()
+
+    if (bf.test(inp)): 
+        print("Password is strong")
+    else: 
+        print("Password is weak")
+
+    for i in range(0, len(passwords), 2):
+        similarity += bloom.get_similarity(passwords[i], passwords[i+1])
+
+    t4=time.time()
+
+    print(f"Time taken: {t4-t3+t2-t1} seconds")
+    return similarity/len(passwords)
+
 
         
 

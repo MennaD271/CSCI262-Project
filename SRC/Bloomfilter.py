@@ -29,7 +29,7 @@ class Bloomfilter:
             hashes.append(hash)
         return hashes
     
-    def train_filter(self, file, passwords):
+    def train_filter(self, passwords):
         '''
         Takes a list of passwords and trains the bloom filter. 
         Bigram_hash function is used to generate the indices for the BF. 
@@ -37,7 +37,7 @@ class Bloomfilter:
         '''
         
         for password in passwords: 
-            for index in self.bigram_hash(password):
+            for index in self.bigram_hash_indices(password):
                 self.filter[index] = 1
             
 
@@ -110,7 +110,7 @@ class Bloomfilter:
         if there are any, return false, corresponding to a weak password. 
         if there are no 0s, then its a strong password and returns true
         '''
-        for index in self.bigram_hash(password):
+        for index in self.bigram_hash_indices(password):
             if self.filter[index] == 0:
                 return False
             

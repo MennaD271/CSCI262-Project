@@ -5,7 +5,7 @@ def read_dataset(filepath):
     with open(filepath, 'r') as file:
         return file.read().splitlines()
 
-def generate_beta(filepath, output_filename):
+def generate_beta(filepath, output_filename) -> float:
     bloomfilter = Bloomfilter()
     passwords = read_dataset(filepath)
     #bloomfilter.train_filter(passwords)  # Pass passwords to train_filter method
@@ -14,6 +14,8 @@ def generate_beta(filepath, output_filename):
             beta = bloomfilter.bigram_hash(password)
             #beta_str = ' '.join(map(str, beta))
             outfile.write(f"{password} {beta}\n")
+
+    
 
 src_folder = 'SRC'
 
