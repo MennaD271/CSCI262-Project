@@ -13,31 +13,31 @@ def main():
         print("Choose 5 to analyze dataset 2.") 
         print("Choose 6 to analyze dataset 3.") 
         print("Choose 0 to exit menu.")
-        option = int(input("Enter your choice: ")) 
+        option = input("Enter your choice: ").strip()
                                            
-        if option == 3:
+        if option == "3":
             nJaccard()
         
-        elif option == 2:
+        elif option == "2":
             similarity()
         
-        elif option == 1: 
+        elif option == "1": 
             bloomfilter()     
         
-        elif option == 4:
+        elif option == "4":
             avg_similarity = analyzeDataset1(); 
             print(f"Average Similarity of dataset 1 is: {avg_similarity}")
             
 
-        elif option == 5:
+        elif option == "5":
             avg_similarity = analyzeDataset2(); 
             print(f"Average Similarity of dataset 2 is: {avg_similarity}")
 
-        elif option == 6:
+        elif option == "6":
             avg_similarity = analyzeDataset3(); 
             print(f"Average Similarity of dataset 3 is: {avg_similarity}")
                   
-        elif option == 0: 
+        elif option == "0": 
             print("Exiting menu")
             break
         

@@ -106,9 +106,9 @@ class Bloomfilter:
     def test(self,password):
         '''
         first get an array of indices for the password
-        then check if any of those indices are 0 
+        then check if any of those indices are 1
         if there are any, return false, corresponding to a weak password. 
-        if there are no 0s, then its a strong password and returns true
+        if there are no common 1s, then its a strong password and returns true
         '''
         for index in self.bigram_hash_indices(password):
             if self.filter[index] == 1:
